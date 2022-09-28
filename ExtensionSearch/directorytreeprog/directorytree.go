@@ -8,7 +8,10 @@ import (
 )
 
 func main() {
-	directory := "."
+
+	//directory := "."
+
+	directory := "/home/ybf/Documents/"
 	customVisit := func(path string, fileInfo os.FileInfo, err1 error) error {
 		if err1 != nil {
 			return err1
