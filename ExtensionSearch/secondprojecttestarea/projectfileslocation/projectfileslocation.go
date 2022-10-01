@@ -7,6 +7,26 @@ import (
 	"path/filepath"
 )
 
+type Searchfilepage struct {
+	Title         string
+	Extension     string
+	Directorypath []string
+	Extensionfind []string
+	Filelocation  string
+}
+
+/*type AllSearchfilepage struct {
+	Searchfilepage []*Searchfilepage
+}*/
+
+var Data = Searchfilepage{
+	"",
+	"",
+	[]string{},
+	[]string{},
+	"",
+}
+
 func removeduplicatestring(datacollected []string) []string {
 	alldatacollected := make(map[string]bool)
 	correctlist := []string{}
@@ -19,23 +39,22 @@ func removeduplicatestring(datacollected []string) []string {
 	return correctlist
 }
 
-func extensionscollection(path string) []string {
-	var extension []string
+func Extensionscollection(path string) []string {
+
 	filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
-		extension = append(extension, filepath.Ext(path))
-		extension = removeduplicatestring(extension)
+		Data.Extensionfind = append(Data.Extensionfind, filepath.Ext(path))
+		Data.Extensionfind = removeduplicatestring(Data.Extensionfind)
 
 		return nil
 	})
 
-	return extension
+	return Data.Extensionfind
 }
 
-func filesfilteredbyextension(root, pattern string) ([]string, error) {
-	var matches []string
+func Filesfilteredbyextension(root, pattern string) ([]string, error) {
 
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
@@ -47,34 +66,33 @@ func filesfilteredbyextension(root, pattern string) ([]string, error) {
 		if matched, err := filepath.Match(pattern, filepath.Base(path)); err != nil {
 			return err
 		} else if matched {
-			matches = append(matches, path)
+			Data.Directorypath = append(Data.Directorypath, path)
 		}
 		return nil
 	})
 	if err != nil {
 		return nil, err
 	}
-	return matches, nil
+	return Data.Directorypath, nil
 }
 
-func Directoryfileslocation() {
+func Directoryfileslocation() []string {
 
-	var repertoryfile string
 	fmt.Print("ENTER YOUR DIRECTORY LOCATION: ")
 
-	fmt.Scanln(&repertoryfile)
+	fmt.Scanln(&Data.Filelocation)
 
-	fmt.Println("First elements", extensionscollection(repertoryfile))
+	fmt.Println("First elements", Extensionscollection(Data.Filelocation))
 
 	fmt.Print("SELECT ONE EXTENSION TO BROWSER PATH OF FILES: ")
 
-	var ext string
+	//var ext string
 
-	fmt.Scanln(&ext)
+	fmt.Scanln(&Data.Extension)
 
-	extension := "*." + ext
+	extension := "*." + Data.Extension
 
-	files, err := filesfilteredbyextension(repertoryfile, extension)
+	files, err := Filesfilteredbyextension(Data.Filelocation, extension)
 	if err != nil {
 		fmt.Println("There is a terrible Error", err)
 	} else if files == nil {
@@ -82,18 +100,10 @@ func Directoryfileslocation() {
 		fmt.Println("No result from the search")
 
 	} else {
-		for _, locationpathfiles := range files {
-			fmt.Println(locationpathfiles)
 
-		}
-
+		Data.Directorypath = files
 	}
 
-	fmt.Println("Program ends")
+	return Data.Directorypath
+
 }
-
-/*func main() {
-
-	directoryfileslocation()
-
-}*/
