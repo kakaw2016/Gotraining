@@ -1,23 +1,18 @@
 <html>
+
 <head>
-	<title>Files search</title>
+    <title>Files search</title>
 </head>
+
 <body>
+    <h1> Here are the result of the research</h1>>
 
-{{range .files}} 
-<div><h3> ID:{{ .Id }} </h3></div>
-<div> First Name:{{ .FirstName }}</div>
-<div> Last Name:{{ .LastName }} </div>
+    <h2>
+        {{range .fileaddress}}
+        {{.}}
 
-{{end}}
-
-<h1>Options</h1>
-<form action="/filesindirectory/">
-    <button type="submit">Add Directory Location</button>
-</form>
-<form action="/localsearchengine/">
-    <button type="submit">Show Files Paths</button>
-</form>
-
+        {{end}}
+    </h2>>
 </body>
+
 </html>

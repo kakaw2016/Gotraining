@@ -3,29 +3,28 @@ package projectfileslocation
 import (
 	"fmt"
 
+	"html/template"
+	"net/http"
 	"os"
 	"path/filepath"
 )
 
 type Searchfilepage struct {
-	Title         string
 	Extension     string
 	Directorypath []string
 	Extensionfind []string
 	Filelocation  string
 }
 
-/*type AllSearchfilepage struct {
-	Searchfilepage []*Searchfilepage
-}*/
-
 var Data = Searchfilepage{
-	"",
-	"",
-	[]string{},
-	[]string{},
-	"",
+
+	Extension:     "",
+	Directorypath: []string{},
+	Extensionfind: []string{},
+	Filelocation:  "",
 }
+
+//var Metadata []Searchfilepage
 
 func removeduplicatestring(datacollected []string) []string {
 	alldatacollected := make(map[string]bool)
@@ -76,7 +75,7 @@ func Filesfilteredbyextension(root, pattern string) ([]string, error) {
 	return Data.Directorypath, nil
 }
 
-func Directoryfileslocation() []string {
+/*func Directoryfileslocation() []string {
 
 	fmt.Print("ENTER YOUR DIRECTORY LOCATION: ")
 
@@ -85,8 +84,6 @@ func Directoryfileslocation() []string {
 	fmt.Println("First elements", Extensionscollection(Data.Filelocation))
 
 	fmt.Print("SELECT ONE EXTENSION TO BROWSER PATH OF FILES: ")
-
-	//var ext string
 
 	fmt.Scanln(&Data.Extension)
 
@@ -105,5 +102,64 @@ func Directoryfileslocation() []string {
 	}
 
 	return Data.Directorypath
+
+}*/
+
+func checkError(err error) {
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+/*func Filesindirectory(w http.ResponseWriter, r *http.Request) {
+
+	directoryaddress := Data.Filelocation
+	t, err := template.ParseFiles("templates/filesindirectory.html")
+	checkError(err)
+	t.Execute(w, directoryaddress)
+
+}*/
+
+func Filesindirectory(w http.ResponseWriter, r *http.Request) {
+
+	extensioncollect := Extensionscollection(Data.Filelocation)
+
+	t, err := template.ParseFiles("templates/filesindirectory.html")
+	checkError(err)
+	t.Execute(w, extensioncollect)
+}
+
+func Extensioncollector(w http.ResponseWriter, r *http.Request) {
+
+	extensioncollected := Extensionscollection(Data.Filelocation)
+
+	t, err := template.ParseFiles("templates/extensioncollector.html")
+	checkError(err)
+	t.Execute(w, extensioncollected)
+}
+
+func Localsearchengine(w http.ResponseWriter, r *http.Request) {
+	localengine := Data.Extension
+
+	t, err := template.ParseFiles("/templates/localsearchengine.html")
+	checkError(err)
+	t.Execute(w, localengine)
+}
+
+func Noextension(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "templates/noextension.html")
+}
+
+func IndexFunc(w http.ResponseWriter, r *http.Request) {
+	fileaddress, err := Filesfilteredbyextension(Data.Filelocation, `"*." + Data.Extension`)
+	checkError(err)
+
+	t, err := template.ParseFiles("templates/indexPage.html")
+	checkError(err)
+	t.Execute(w, fileaddress)
+}
+
+func Nofiles(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "templates/nofiles.html")
 
 }
