@@ -7,18 +7,7 @@ import (
 	"path/filepath"
 )
 
-type Searchfilepage struct {
-	Title         string
-	Directorypath []string
-	Extensionfind []string
-	Filelocation  string
-}
-
-type AllSearchfilepage struct {
-	Searchfilepage []*Searchfilepage
-}
-
-func removeduplicatestring(datacollected []string) []string {
+func removeDuplicateString(datacollected []string) []string {
 	alldatacollected := make(map[string]bool)
 	correctlist := []string{}
 	for _, data := range datacollected {
@@ -30,14 +19,14 @@ func removeduplicatestring(datacollected []string) []string {
 	return correctlist
 }
 
-func Extensionscollection(path string) []string {
+func extensionsCollection(path string) []string {
 	var extension []string
 	filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
 		extension = append(extension, filepath.Ext(path))
-		extension = removeduplicatestring(extension)
+		extension = removeDuplicateString(extension)
 
 		return nil
 	})
@@ -45,7 +34,7 @@ func Extensionscollection(path string) []string {
 	return extension
 }
 
-func Filesfilteredbyextension(root, pattern string) ([]string, error) {
+func filesFilteredbyExtension(root, pattern string) ([]string, error) {
 	var matches []string
 
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
@@ -75,7 +64,7 @@ func Directoryfileslocation() {
 
 	fmt.Scanln(&repertoryfile)
 
-	fmt.Println("First elements", Extensionscollection(repertoryfile))
+	fmt.Println("First elements", extensionsCollection(repertoryfile))
 
 	fmt.Print("SELECT ONE EXTENSION TO BROWSER PATH OF FILES: ")
 
@@ -85,7 +74,7 @@ func Directoryfileslocation() {
 
 	extension := "*." + ext
 
-	files, err := Filesfilteredbyextension(repertoryfile, extension)
+	files, err := filesFilteredbyExtension(repertoryfile, extension)
 	if err != nil {
 		fmt.Println("There is a terrible Error", err)
 	} else if files == nil {
