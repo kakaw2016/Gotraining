@@ -46,7 +46,9 @@ func DirectoryFilesLocation() {
 
 	configMap := configurationFile.ReadConfigurationFile("/home/youthbrigthfuture/go/src/github.com/kakaw2016/Gotraining/Ariel/configurationfile.txt")
 
-	externalStoredata, err := os.OpenFile("FileSearchFinalResult.txt", os.O_RDWR|os.O_CREATE, 0666)
+	//Save search file path in the output files and update the line each time the research is launched.
+
+	externalStoredata, err := os.OpenFile("FileSearchFinalResult.txt", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -55,9 +57,8 @@ func DirectoryFilesLocation() {
 	w := bufio.NewWriter(externalStoredata)
 
 	for filePaths, fileExtension := range configMap {
-		//fmt.Printf("Local path to the files: %s, the extension selected: %s\n", filePaths, fileExtension)
-		//fmt.Println("--")
-		storing0 := fmt.Sprintf("Local path to the files: %s, the extension selected: %s\n--\n", filePaths, fileExtension)
+
+		storing0 := fmt.Sprintf("\n--\nLocal path to the files: %s, the extension selected: %s\n", filePaths, fileExtension)
 		_, _ = w.WriteString(storing0)
 
 		extension := "*" + fileExtension
@@ -66,20 +67,17 @@ func DirectoryFilesLocation() {
 
 		files, err := filesFilteredbyExtension(filePaths, extension)
 		if err != nil {
-			//fmt.Println("filesFilteredbyExtension has an Error", err)
+
 			storing1 := fmt.Sprint("filesFilteredbyExtension has an Error", err, "\n")
 			_, _ = w.WriteString(storing1)
 		} else if files == nil {
 
-			//fmt.Println("No File path can be found after search.")
 			storing2 := fmt.Sprint("\n", "No File path can be found after search.", "\n")
 			_, _ = w.WriteString(storing2)
 
 		} else {
 			for _, locatePathFiles := range files {
 
-				//fmt.Println(locatePathFiles)
-				//fmt.Println("**")
 				storing3 := fmt.Sprint("**\n", locatePathFiles, "\n")
 				_, _ = w.WriteString(storing3)
 
@@ -88,7 +86,7 @@ func DirectoryFilesLocation() {
 		}
 
 	}
-	fmt.Println("Please Check Your Results In File Search Final Result Text File.")
+	fmt.Println("Please Check Your Final Results Inside File Search Text File.")
 
 	fmt.Println("Program Ends")
 	w.Flush()
