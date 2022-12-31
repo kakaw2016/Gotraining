@@ -5,8 +5,10 @@ import (
 )
 
 func main() {
-	for i := 65; i <= 90; i++ {
+	for i := 85; i <= 90; i++ {
 		fmt.Printf("%b\t %#U\n", i, i)
+		fmt.Print("\n--------\n")
+		fmt.Printf("%.*s\n", i, "*****")
 	}
 
 }

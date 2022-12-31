@@ -6,6 +6,6 @@ import (
 
 func main() {
 
-	projectfileslocation.Directoryfileslocation()
+	projectfileslocation.DirectoryFilesLocation()
 
 }

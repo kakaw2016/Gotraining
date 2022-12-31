@@ -1,0 +1,5 @@
+/home/youthbrigthfuture/go/src/github.com/kakaw2016/Gotraining/FirstProject
+/home/youthbrigthfuture/go/src/github.com/kakaw2016/Gotraining/Webdevelopment
+/home/youthbrigthfuture/go/src/github.com/kakaw2016/Gotraining/ExtensionSearch
+/home/youthbrigthfuture/go/src/github.com/kakaw2016/Gotraining/BlurtpowerScrape
+/home/youthbrigthfuture/go/src/github.com/kakaw2016/Gotraining/Webdevelopment/webschooldata

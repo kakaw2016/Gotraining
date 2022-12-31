@@ -1,38 +1,19 @@
 package projectfileslocation
 
+// Projectfileslocation contains the principal engine to search the files base on the extension
+
 import (
+	"bufio"
 	"fmt"
+	"log"
 
 	"os"
 	"path/filepath"
+
+	"github.com/kakaw2016/Gotraining/Ariel/configurationFile"
 )
 
-func removeDuplicateString(datacollected []string) []string {
-	alldatacollected := make(map[string]bool)
-	correctlist := []string{}
-	for _, data := range datacollected {
-		if _, value := alldatacollected[data]; !value {
-			alldatacollected[data] = true
-			correctlist = append(correctlist, data)
-		}
-	}
-	return correctlist
-}
-
-func extensionsCollection(path string) []string {
-	var extension []string
-	filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		extension = append(extension, filepath.Ext(path))
-		extension = removeDuplicateString(extension)
-
-		return nil
-	})
-
-	return extension
-}
+// Files located using the extensions
 
 func filesFilteredbyExtension(root, pattern string) ([]string, error) {
 	var matches []string
@@ -57,37 +38,58 @@ func filesFilteredbyExtension(root, pattern string) ([]string, error) {
 	return matches, nil
 }
 
-func Directoryfileslocation() {
+// Magor file path search in Directories
 
-	var repertoryfile string
-	fmt.Print("ENTER YOUR DIRECTORY LOCATION: ")
+func DirectoryFilesLocation() {
 
-	fmt.Scanln(&repertoryfile)
+	//Read input from the configuration file
 
-	fmt.Println("First elements", extensionsCollection(repertoryfile))
+	configMap := configurationFile.ReadConfigurationFile("/home/youthbrigthfuture/go/src/github.com/kakaw2016/Gotraining/Ariel/configurationfile.txt")
 
-	fmt.Print("SELECT ONE EXTENSION TO BROWSER PATH OF FILES: ")
-
-	var ext string
-
-	fmt.Scanln(&ext)
-
-	extension := "*." + ext
-
-	files, err := filesFilteredbyExtension(repertoryfile, extension)
+	externalStoredata, err := os.OpenFile("FileSearchFinalResult.txt", os.O_RDWR|os.O_CREATE, 0666)
 	if err != nil {
-		fmt.Println("There is a terrible Error", err)
-	} else if files == nil {
+		log.Fatal(err)
+	}
+	defer externalStoredata.Close()
 
-		fmt.Println("No result from the search")
+	w := bufio.NewWriter(externalStoredata)
 
-	} else {
-		for _, locationpathfiles := range files {
-			fmt.Println(locationpathfiles)
+	for filePaths, fileExtension := range configMap {
+		//fmt.Printf("Local path to the files: %s, the extension selected: %s\n", filePaths, fileExtension)
+		//fmt.Println("--")
+		storing0 := fmt.Sprintf("Local path to the files: %s, the extension selected: %s\n--\n", filePaths, fileExtension)
+		_, _ = w.WriteString(storing0)
+
+		extension := "*" + fileExtension
+
+		//Complete the repertory search with the key factors filepaths and extension
+
+		files, err := filesFilteredbyExtension(filePaths, extension)
+		if err != nil {
+			//fmt.Println("filesFilteredbyExtension has an Error", err)
+			storing1 := fmt.Sprint("filesFilteredbyExtension has an Error", err, "\n")
+			_, _ = w.WriteString(storing1)
+		} else if files == nil {
+
+			//fmt.Println("No File path can be found after search.")
+			storing2 := fmt.Sprint("\n", "No File path can be found after search.", "\n")
+			_, _ = w.WriteString(storing2)
+
+		} else {
+			for _, locatePathFiles := range files {
+
+				//fmt.Println(locatePathFiles)
+				//fmt.Println("**")
+				storing3 := fmt.Sprint("**\n", locatePathFiles, "\n")
+				_, _ = w.WriteString(storing3)
+
+			}
 
 		}
 
 	}
+	fmt.Println("Please Check Your Results In File Search Final Result Text File.")
 
-	fmt.Println("Program ends")
+	fmt.Println("Program Ends")
+	w.Flush()
 }
