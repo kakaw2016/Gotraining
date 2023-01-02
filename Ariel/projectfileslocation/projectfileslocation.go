@@ -63,7 +63,7 @@ func DirectoryFilesLocation() {
 
 	for filePaths, fileExtensions := range mapPaths {
 
-		storing0 := fmt.Sprintf("\n--\nLocal path to the files: %s, the extension selected: %s\n", filePaths, fileExtensions)
+		storing0 := fmt.Sprintf("--\nLocal path to the files: %s, the extension selected: %s\n", filePaths, fileExtensions)
 		_, _ = w.WriteString(storing0)
 
 		fileExtension := "*" + fileExtensions

@@ -2,3 +2,5 @@ path=/home/youthbrigthfuture/go/src/github.com/kakaw2016/goscrape/BlurtConnnectL
 extensions=txt
 path=/home/youthbrigthfuture/go/src/github.com/kakaw2016/Gotraining/BlurtpowerScrape
 extensions=go
+path=/run/media/youthbrigthfuture/Windows/KMPlayer/
+extensions=exe
