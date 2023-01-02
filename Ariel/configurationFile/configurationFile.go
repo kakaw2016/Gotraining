@@ -4,43 +4,12 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"path/filepath"
+	"strings"
 )
-
-// Duplicate removal in an array inside the code
-
-func removeDuplicateString(datacollected []string) []string {
-	alldatacollected := make(map[string]bool)
-	correctlist := []string{}
-	for _, data := range datacollected {
-		if _, value := alldatacollected[data]; !value {
-			alldatacollected[data] = true
-			correctlist = append(correctlist, data)
-		}
-	}
-	return correctlist
-}
-
-// Extensions identification inside a directory of divers length
-
-func extensionsCollection(filepaths string) []string {
-	var extension []string
-	filepath.Walk(filepaths, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		extension = append(extension, filepath.Ext(path))
-		extension = removeDuplicateString(extension)
-
-		return nil
-	})
-
-	return extension
-}
 
 // Configuration details in file that generates all the input we will use to find the files
 
-func ReadConfigurationFile(configurationFilepath string) map[string]string {
+func ReadConfigurationFile(configurationFilepath string) (map[string]string, error) {
 
 	// Open the config file in read-only mode
 	configFile, err := os.Open(configurationFilepath)
@@ -50,34 +19,38 @@ func ReadConfigurationFile(configurationFilepath string) map[string]string {
 	}
 	defer configFile.Close()
 
-	// Create a new scanner to read the config file
+	// Create scanner for config.txt
 	scanner := bufio.NewScanner(configFile)
 
-	data := make(map[string]string)
+	// Create mapping to store paths
+	valueStorage := make(map[string]string)
+	dataStorage := make(map[string]string)
 
-	// Read the config file line by line
+	// Create slice to store extensions
+
 	for scanner.Scan() {
-		// Get the current line
 		line := scanner.Text()
+		parts := strings.Split(line, "=")
+		if len(parts) == 2 {
+			key := strings.TrimSpace(parts[0])
+			value := strings.TrimSpace(parts[1])
+			if key == "path" {
+				// Add path to mapping
+				valueStorage["path"] = value
 
-		allExtensions := extensionsCollection(line)
+			} else if key == "extensions" {
 
-		///fmt.Println("ok", allExtensions)
-
-		// Store the path and extension in the map
-		for i := 0; i < len(allExtensions); i++ {
-			if allExtensions[0] != allExtensions[i] {
-				data[line] = allExtensions[i]
+				valueStorage["extensions"] = value
 			}
-
 		}
+		dataStorage[valueStorage["path"]] = valueStorage["extensions"]
 
 	}
 
-	// Check for any errors that occurred during the scan
+	// Check for errors while scanning
 	if err := scanner.Err(); err != nil {
-		fmt.Println(err)
+		return nil, err
 	}
 
-	return data
+	return dataStorage, nil
 }

@@ -1,0 +1,5 @@
+
+--
+Local path to the files: /home/youthbrigthfuture/Videos/, the extension selected: .txt
+**
+/home/youthbrigthfuture/Videos/VideoContentsCreator/audioconcate.txt

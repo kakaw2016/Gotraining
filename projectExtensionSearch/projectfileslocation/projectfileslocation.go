@@ -49,7 +49,7 @@ func DirectoryFilesLocation() {
 	relativePath, _ := filepath.Rel(currentDir, configPath)
 	fmt.Println("Reading config file at relative path:", relativePath)
 
-	mapPaths, _ := configurationFile.ReadConfigurationFile(relativePath)
+	configMap := configurationFile.ReadConfigurationFile(relativePath)
 
 	//Save search file path in the output files and update the line each time the research is launched.
 
@@ -61,16 +61,16 @@ func DirectoryFilesLocation() {
 
 	w := bufio.NewWriter(externalStoredata)
 
-	for filePaths, fileExtensions := range mapPaths {
+	for filePaths, fileExtension := range configMap {
 
-		storing0 := fmt.Sprintf("\n--\nLocal path to the files: %s, the extension selected: %s\n", filePaths, fileExtensions)
+		storing0 := fmt.Sprintf("\n--\nLocal path to the files: %s, the extension selected: %s\n", filePaths, fileExtension)
 		_, _ = w.WriteString(storing0)
 
-		fileExtension := "*" + fileExtensions
+		extension := "*" + fileExtension
 
 		//Complete the repertory search with the key factors filepaths and extension
 
-		files, err := filesFilteredbyExtension(filePaths, fileExtension)
+		files, err := filesFilteredbyExtension(filePaths, extension)
 		if err != nil {
 
 			storing1 := fmt.Sprint("filesFilteredbyExtension has an Error", err, "\n")
