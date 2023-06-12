@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Extension collection in the directory folder</title>
+</head>
+
+<body>
+    <h1> Liste of Extension found after the research</h1>>
+
+    <ul>
+        {{range .Data.Extensionfind}}
+        <h3>{{ . }}</h3>
+
+        {{end}}
+
+
+
+    </ul>
+    <h3>Please, enter your disered extension to search files</h3>
+    <form method="POST" action="/localsearchengine/">
+        <label>Enter Your Directory Location</label><br>
+        <input type="text" name="Data.Extension" /><br><br>
+        <input type="submit" value="Submit" />
+    </form>
+</body>
+
+</html>

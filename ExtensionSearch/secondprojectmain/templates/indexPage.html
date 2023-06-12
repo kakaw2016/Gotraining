@@ -1,0 +1,23 @@
+<html>
+<head>
+	<title>Files search</title>
+</head>
+<body>
+
+{{range .files}} 
+<div><h3> ID:{{ .Id }} </h3></div>
+<div> First Name:{{ .FirstName }}</div>
+<div> Last Name:{{ .LastName }} </div>
+
+{{end}}
+
+<h1>Options</h1>
+<form action="/filesindirectory/">
+    <button type="submit">Add Directory Location</button>
+</form>
+<form action="/localsearchengine/">
+    <button type="submit">Show Files Paths</button>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+--
+Local path to the files: /home/youthbrigthfuture/go/src/github.com/kakaw2016/goscrape/BlurtConnnectLinks, the extension selected: txt
+**
+/home/youthbrigthfuture/go/src/github.com/kakaw2016/goscrape/BlurtConnnectLinks/BlurtConnectLinkScrape.txt
+**
+/home/youthbrigthfuture/go/src/github.com/kakaw2016/goscrape/BlurtConnnectLinks/tessssssst.txt
+--
+Local path to the files: /home/youthbrigthfuture/go/src/github.com/kakaw2016/Gotraining/BlurtpowerScrape, the extension selected: go
+**
+/home/youthbrigthfuture/go/src/github.com/kakaw2016/Gotraining/BlurtpowerScrape/ScrapBlurtLive.go
+**
+/home/youthbrigthfuture/go/src/github.com/kakaw2016/Gotraining/BlurtpowerScrape/ScrapingCode/BlurtAgescrape/BlurtAgeScraper.go
+--
+Local path to the files: /run/media/youthbrigthfuture/Windows/KMPlayer/, the extension selected: exe
+filesFilteredbyExtension has an Errorlstat /run/media/youthbrigthfuture/Windows/KMPlayer/: no such file or directory
